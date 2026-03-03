@@ -1,59 +1,73 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+***
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# DDD Structure Generator
 
-## About Laravel
+A Laravel Artisan command that scaffolds a Hexagonal + Domain-Driven Design folder structure for a given bounded context and entity.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Usage
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+php artisan make:ddd {context} {entity} [--force]
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Arguments
 
-## Learning Laravel
+| Argument  | Description                                      | Example             |
+|-----------|--------------------------------------------------|---------------------|
+| `context` | The bounded context the entity belongs to        | `admin`, `sales`    |
+| `entity`  | The entity name to scaffold                      | `products`, `users` |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Options
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Option    | Description                                         |
+|-----------|-----------------------------------------------------|
+| `--force` | Overwrite existing structure without confirmation   |
 
-## Laravel Sponsors
+### Examples
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+# Create structure for "books" inside the "lms" context
+php artisan make:ddd sales products
 
-### Premium Partners
+# Force overwrite if structure already exists
+php artisan make:ddd sales products --force
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Generated Structure
 
-## Contributing
+All files are created under `src/{context}/{entity}/`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+src/sales/products/
+├── Domain/
+│   ├── Entities/
+│   ├── Aggregates/
+│   ├── ValueObjects/
+│   ├── Events/
+│   └── Contracts/
+├── Application/
+│   ├── UseCases/
+│   ├── DTOs/
+│   └── Services/
+├── Infrastructure/
+│   ├── Persistence/
+│   ├── Listeners/
+│   └── Jobs/
+├── Interfaces/
+│   └── Http/
+│       ├── Controllers/
+│       ├── Requests/
+│       ├── Resources/
+│       └── Routes/
+│           └── api.php
+└── ProductsServiceProvider.php
+```
 
-## Code of Conduct
+## What the command does automatically
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Creates all directories with `.gitkeep` placeholders
+- Generates a `{Entity}ServiceProvider.php` that loads the module's routes
+- Registers the service provider in `bootstrap/providers.php`
+- Links the module route file into `routes/api.php` under the prefix `{context}_{entity}`
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+***
