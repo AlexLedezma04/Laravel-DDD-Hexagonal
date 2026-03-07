@@ -113,6 +113,8 @@ class DDDStructure extends Command
         $content = <<<PHP
         <?php
 
+        declare(strict_types=1);
+
         namespace {$namespace};
 
         use Illuminate\Support\ServiceProvider;
@@ -257,6 +259,8 @@ class DDDStructure extends Command
         return <<<PHP
         <?php
 
+        declare(strict_types=1);
+
         namespace {$ns}\\Domain\\Entities;
 
         class {$this->entityStudly}
@@ -272,6 +276,8 @@ class DDDStructure extends Command
     {
         return <<<PHP
         <?php
+
+        declare(strict_types=1);
 
         namespace {$ns}\\Domain\\Contracts;
 
@@ -291,6 +297,8 @@ class DDDStructure extends Command
         return <<<PHP
         <?php
 
+        declare(strict_types=1);
+
         namespace {$ns}\\Application\\DTOs;
 
         class {$this->entityStudly}DTO
@@ -306,6 +314,8 @@ class DDDStructure extends Command
     {
         return <<<PHP
         <?php
+
+        declare(strict_types=1);
 
         namespace {$ns}\\Application\\UseCases;
 
@@ -330,6 +340,8 @@ class DDDStructure extends Command
     {
         return <<<PHP
         <?php
+
+        declare(strict_types=1);
 
         namespace {$ns}\\Infrastructure\\Persistence;
 
@@ -361,6 +373,8 @@ class DDDStructure extends Command
         return <<<PHP
         <?php
 
+        declare(strict_types=1);
+
         namespace {$ns}\\Interfaces\\Http\\Controllers;
 
         use Illuminate\\Http\\JsonResponse;
@@ -388,6 +402,8 @@ class DDDStructure extends Command
         return <<<PHP
         <?php
 
+        declare(strict_types=1);
+
         namespace {$ns}\\Interfaces\\Http\\Requests;
 
         use Illuminate\\Foundation\\Http\\FormRequest;
@@ -413,6 +429,8 @@ class DDDStructure extends Command
     {
         return <<<PHP
         <?php
+
+        declare(strict_types=1);
 
         namespace {$ns}\\Interfaces\\Http\\Resources;
 
